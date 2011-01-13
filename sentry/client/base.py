@@ -1,4 +1,5 @@
 import base64
+import copy
 try:
     import cPickle as pickle
 except ImportError:
@@ -25,7 +26,9 @@ class SentryClient(object):
 
         request = kwargs.pop('request', None)
         if request:
-            if not kwargs.get('data'):
+            if kwargs.get('data'):
+                kwargs['data'] = copy.copy(kwargs['data'])
+            else:
                 kwargs['data'] = {}
             kwargs['data'].update(dict(
                 META=request.META,
